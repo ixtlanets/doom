@@ -29,6 +29,11 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 
+;; Font settings
+(setq
+ doom-font (font-spec :family "Hack Nerd Font" :size 16)
+ doom-big-font (font-spec :family "Hack Nerd Font" :size 24))
+
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
@@ -40,10 +45,13 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-(setq org-todo-keywords '((sequence "TODO(t)" "IDEA(i)" "WAIT(w)" "HOLD(h)" "|" "DONE(d)" "CANC(c)")
-                          (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
-                          (sequence "|" "OKAY(o)" "YES(y)" "NO(n)")))
+(after! org
+
+  (setq org-directory "~/org/")
+  (setq org-todo-keywords '((sequence "TODO(t)" "IDEA(i)" "WAIT(w)" "HOLD(h)" "|" "DONE(d)" "CANC(c)")
+                            (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
+                            (sequence "|" "OKAY(o)" "YES(y)" "NO(n)")))
+  )
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
