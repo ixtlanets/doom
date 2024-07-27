@@ -51,8 +51,93 @@
   (setq org-todo-keywords '((sequence "TODO(t)" "IDEA(i)" "WAIT(w)" "HOLD(h)" "|" "DONE(d)" "CANC(c)")
                             (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
                             (sequence "|" "OKAY(o)" "YES(y)" "NO(n)")))
+  (setq
+   org-agenda-skip-scheduled-if-done t
+   org-ellipsis " ▾ "
+   org-bullets-bullet-list '("·")
+   org-tags-column -80
+   org-log-done 'time
+   )
+  (set-face-attribute 'org-link nil
+                      :weight 'normal
+                      :background nil)
+  (set-face-attribute 'org-code nil
+                      :foreground "#a9a1e1"
+                      :background nil)
+  (set-face-attribute 'org-date nil
+                      :foreground "#5B6268"
+                      :background nil)
+  (set-face-attribute 'org-level-1 nil
+                      :foreground "steelblue2"
+                      :background nil
+                      :height 1.8
+                      :weight 'normal)
+  (set-face-attribute 'org-level-2 nil
+                      :foreground "slategray2"
+                      :background nil
+                      :height 1.5
+                      :weight 'normal)
+  (set-face-attribute 'org-level-3 nil
+                      :foreground "SkyBlue2"
+                      :background nil
+                      :height 1.3
+                      :weight 'normal)
+  (set-face-attribute 'org-level-4 nil
+                      :foreground "DodgerBlue2"
+                      :background nil
+                      :height 1.2
+                      :weight 'normal)
+  (set-face-attribute 'org-level-5 nil
+                      :weight 'normal)
+  (set-face-attribute 'org-level-6 nil
+                      :weight 'normal)
+  (set-face-attribute 'org-document-title nil
+                      :foreground "SlateGray1"
+                      :background nil
+                      :height 1.75
+                      :weight 'bold)
   )
 
+
+;; Editor config
+                                        ; Set tab width to 2 for all buffers
+(setq-default tab-width 2)
+
+                                        ; Use 2 spaces instead of a tab.
+(setq-default tab-width 2 indent-tabs-mode nil)
+
+                                        ; Indentation cannot insert tabs.
+(setq-default indent-tabs-mode nil)
+
+(setq
+ dart-format-on-save t
+ js-indent-level 2
+ coffee-tab-width 2
+ python-indent 2
+ css-indent-offset 2
+ web-mode-markup-indent-offset 2
+ web-mode-code-indent-offset 2
+ web-mode-css-indent-offset 2
+ typescript-indent-level 2
+ json-reformat:indent-width 2
+ prettier-js-args '("--single-quote")
+ projectile-project-search-path '("~/pro/")
+ dired-dwim-target t
+ )
+
+(add-hook! reason-mode
+  (add-hook 'before-save-hook #'refmt-before-save nil t))
+
+(add-hook!
+ js2-mode 'prettier-js-mode
+ (add-hook 'before-save-hook #'refmt-before-save nil t))
+
+;; Increment / Decrement numbers
+
+(global-set-key (kbd "C-=") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "C--") 'evil-numbers/dec-at-pt)
+(define-key evil-normal-state-map (kbd "C-=") 'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "C--") 'evil-numbers/dec-at-pt)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
