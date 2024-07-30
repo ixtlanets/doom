@@ -139,6 +139,30 @@
 (define-key evil-normal-state-map (kbd "C-=") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "C--") 'evil-numbers/dec-at-pt)
 
+;; Email configuration
+(set-email-account! "gmail"
+                    '(
+                      (mu4e-sent-folder       . "/gmail/[Gmail]/Sent Mail")
+                      (mu4e-drafts-folder     . "/gmail/[Gmail]/Drafts")
+                      (mu4e-trash-folder      . "/gmail/[Gmail]/Trash")
+                      (mu4e-refile-folder     . "/gmail/[Gmail]/All Mail")
+                      (smtpmail-smtp-user     . "snikulin@gmail.com")
+                      (user-full-name         . "Sergey Nikulin")
+                      (user-mail-address      . "snikulin@gmail.com")    ;; only needed for mu < 1.4
+                      (mu4e-compose-signature . "---\nBest Wishes,\nSergey Nikulin"))
+                    t)
+
+(set-email-account! "zencar"
+                    '(
+                      (mu4e-sent-folder       . "/zencar/Sent")
+                      (mu4e-drafts-folder     . "/zencar/Drafts")
+                      (mu4e-trash-folder      . "/zencar/Trash")
+                      (mu4e-refile-folder     . "/zencar/Archive")
+                      (smtpmail-smtp-user     . "sn@zencar.tech")
+                      (user-full-name         . "Sergey Nikulin")
+                      (user-mail-address      . "sn@zencar.tech")    ;; only needed for mu < 1.4
+                      (mu4e-compose-signature . "---\nBest Wishes,\nSergey Nikulin"))
+                    t)
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
