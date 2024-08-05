@@ -297,3 +297,9 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 (use-package! gptel)
+
+
+(use-package! password-store
+  :bind ("C-c k" . password-store-copy)
+  :config
+  (setq password-store-time-before-clipboard-restore 30))
