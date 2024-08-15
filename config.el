@@ -192,6 +192,8 @@
                     ":CAPTURED: %U\n"
                     ":END:\n\n"
                     "Link: %^{Link to news source}\n"
+                    "WA/FB/LN\n#+begin_quote\n%^{Medium text}#+end_quote\n"
+                    "TW\n#+begin_quote\n%^{Short text}#+end_quote\n"
                     "%?")
            :empty-lines-after 2)
           ))
