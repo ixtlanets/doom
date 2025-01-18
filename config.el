@@ -31,9 +31,10 @@
 
 ;; Font settings
 (setq
- doom-font (font-spec :family "Hack Nerd Font" :size 20)
- doom-big-font (font-spec :family "Hack Nerd Font" :size 32)
- doom-variable-pitch-font (font-spec :family "Cantarell" :size 20))
+ doom-font (font-spec :family "Hack Nerd Font" :size 18)
+ doom-big-font (font-spec :family "Hack Nerd Font" :size 30)
+ doom-variable-pitch-font (font-spec :family "Cantarell" :size 18))
+
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
