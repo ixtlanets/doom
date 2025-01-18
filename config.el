@@ -45,30 +45,37 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 
+;; Ensure relative line numbers are used in all buffers
+(add-hook 'prog-mode-hook (lambda () (setq display-line-numbers 'relative)))
+(add-hook 'text-mode-hook (lambda () (setq display-line-numbers 'relative)))
+
+;; Disable line numbers for some modes
+(dolist (mode '(org-mode-hook
+                term-mode-hook
+                vterm-mode-hook
+                shell-mode-hook
+                treemacs-mode-hook
+                eshell-mode-hook
+                pdf-view-mode))
+  (add-hook mode (lambda () (display-line-numbers-mode -1))))
+
 ;; Launch Emacs maximized
 
 (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
+(setq org-directory "~/org/")
 
-
-(defun nik/ensure-heading-exists (file headline)
-  "Ensure that a heading exists in the specified file. If the heading does not exist, it is created."
-  (save-excursion
-    (with-current-buffer (find-file-noselect file)
-      (org-with-wide-buffer
-       (goto-char (point-min))
-       (unless (search-forward-regexp (format "^*\\s-+News" ) nil t)
-         (goto-char (point-max))
-         (insert "* News\n"))
-       (unless (re-search-forward (format "^**\\s-+%s$" headline) nil t)
-         (goto-char (point-max))
-         (insert (format "** %s\n" headline)))
-       (save-buffer)))))
-
+;; Org mode customizations
 (defun nik/org-font-setup ()
+  ;; Replace list hyphen with dot
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
   ;; Set faces for heading levels
   (dolist (face '((org-level-1 . 1.7)
                   (org-level-2 . 1.6)
@@ -91,9 +98,34 @@
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch))
 
-(use-package! org
+(defun nik/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (visual-line-mode 1)
+  (org-bullets-mode 1))
+
+(defun nik/ensure-heading-exists (file headline)
+  "Ensure that a heading exists in the specified file. If the heading does not exist, it is created."
+  (save-excursion
+    (with-current-buffer (find-file-noselect file)
+      (org-with-wide-buffer
+       (goto-char (point-min))
+       (unless (search-forward-regexp (format "^*\\s-+News" ) nil t)
+         (goto-char (point-max))
+         (insert "* News\n"))
+       (unless (re-search-forward (format "^**\\s-+%s$" headline) nil t)
+         (goto-char (point-max))
+         (insert (format "** %s\n" headline)))
+       (save-buffer)))))
+
+
+(use-package org
+  :ensure t
   :bind ("C-c c" . org-capture)
+  :hook (org-mode . nik/org-mode-setup)
   :config
+  (setq org-ellipsis " ▾")
+
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
@@ -107,7 +139,7 @@
           "~/org/home.org"))
   (setq org-archive-location "~/org/archive.org::* From %s")
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(e)")
           (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
   (setq org-refile-targets
         '(("archive.org" :maxlevel . 1)
@@ -188,17 +220,23 @@
                 (re-search-forward (format "^*\\s-+News\\s-*$"))
                 (re-search-forward (format "^**\\s-+%s$" headline))
                 (org-end-of-subtree t))))
-           ,(concat "*** %^{Title}\n"
+           ,(concat "*** [[%^{Link to news source}][%^{Title}]]\n"
                     ":PROPERTIES:\n"
                     ":CAPTURED: %U\n"
                     ":END:\n\n"
-                    "Link: %^{Link to news source}\n"
-                    "WA/FB/LN\n#+begin_quote\n%^{Medium text}#+end_quote\n"
-                    "TW\n#+begin_quote\n%^{Short text}#+end_quote\n"
+                    "*Whatsapp & FB*:\n%^{Text for Whatsapp}\n------\n"
+                    "*Twitter*:\n%^{Text for Twitter}\n"
                     "%?")
            :empty-lines-after 2)
           ))
+
+
+
   (nik/org-font-setup))
+
+(use-package org-bullets
+  :ensure t
+  :after org)
 
 (require 'org-tempo)
 
@@ -208,15 +246,13 @@
 (add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 
-
-;; Editor config
-                                        ; Set tab width to 2 for all buffers
+;; Set tab width to 2 for all buffers
 (setq-default tab-width 2)
 
-                                        ; Use 2 spaces instead of a tab.
+;; Use 2 spaces instead of a tab.
 (setq-default tab-width 2 indent-tabs-mode nil)
 
-                                        ; Indentation cannot insert tabs.
+;; Indentation cannot insert tabs.
 (setq-default indent-tabs-mode nil)
 
 (setq
@@ -273,6 +309,7 @@
                       (user-mail-address      . "sn@zencar.tech")    ;; only needed for mu < 1.4
                       (mu4e-compose-signature . "---\nBest Wishes,\nSergey Nikulin"))
                     t)
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
@@ -304,10 +341,3 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(use-package! gptel)
-
-
-(use-package! password-store
-  :bind ("C-c k" . password-store-copy)
-  :config
-  (setq password-store-time-before-clipboard-restore 30))
