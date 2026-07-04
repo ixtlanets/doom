@@ -33,7 +33,7 @@
 (setq
  doom-font (font-spec :family "Hack Nerd Font" :size 18)
  doom-big-font (font-spec :family "Hack Nerd Font" :size 30)
- doom-variable-pitch-font (font-spec :family "Cantarell" :size 18))
+ doom-variable-pitch-font (font-spec :family "Roboto" :size 18))
 
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -85,7 +85,7 @@
                   (org-level-6 . 1.2)
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.0)))
-    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+    (set-face-attribute (car face) nil :font "Roboto" :weight 'regular :height (cdr face)))
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
   (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
