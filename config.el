@@ -310,6 +310,15 @@
                       (mu4e-compose-signature . "---\nBest Wishes,\nSergey Nikulin"))
                     t)
 
+;; Codex IDE
+(use-package! codex-ide
+  :commands (codex-ide codex-ide-menu)
+  :init
+  (map! :desc "Codex menu" "C-c C-;" #'codex-ide-menu
+        :leader
+        :desc "Codex session" "o c" #'codex-ide
+        :desc "Codex menu" "o C" #'codex-ide-menu))
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;

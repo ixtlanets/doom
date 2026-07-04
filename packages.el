@@ -50,4 +50,6 @@
 
 ;; LLM client for emacs
 (package! gptel)
+(package! codex-ide
+  :recipe (:host github :repo "dgillis/emacs-codex-ide"))
 (package! org-bullets)
