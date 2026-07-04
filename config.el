@@ -282,8 +282,9 @@
 
 (global-set-key (kbd "C-=") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C--") 'evil-numbers/dec-at-pt)
-(define-key evil-normal-state-map (kbd "C-=") 'evil-numbers/inc-at-pt)
-(define-key evil-normal-state-map (kbd "C--") 'evil-numbers/dec-at-pt)
+(after! evil
+  (define-key evil-normal-state-map (kbd "C-=") 'evil-numbers/inc-at-pt)
+  (define-key evil-normal-state-map (kbd "C--") 'evil-numbers/dec-at-pt))
 
 ;; Email configuration
 (set-email-account! "gmail"

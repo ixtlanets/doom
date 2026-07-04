@@ -56,13 +56,19 @@ After this step, the machine should have Emacs and the dependencies this Doom co
 If Doom itself is not already present at `~/.config/emacs`, clone it:
 
 ```sh
-git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
+git clone --depth 1 --recurse-submodules https://github.com/doomemacs/doomemacs ~/.config/emacs
 ```
 
 The Doom CLI should then be available at:
 
 ```sh
 ~/.config/emacs/bin/doom
+```
+
+If Doom was already cloned without submodules, initialize them before running `doom sync`:
+
+```sh
+git -C ~/.config/emacs submodule update --init --recursive
 ```
 
 ### 3. Install this private config
