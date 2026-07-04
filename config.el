@@ -31,8 +31,8 @@
 
 ;; Font settings
 (setq
- doom-font (font-spec :family "Hack Nerd Font" :size 18)
- doom-big-font (font-spec :family "Hack Nerd Font" :size 30)
+ doom-font (font-spec :family "Hack Nerd Font Mono" :size 18)
+ doom-big-font (font-spec :family "Hack Nerd Font Mono" :size 30)
  doom-variable-pitch-font (font-spec :family "Roboto" :size 18))
 
 
@@ -101,8 +101,7 @@
 (defun nik/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
-  (visual-line-mode 1)
-  (org-bullets-mode 1))
+  (visual-line-mode 1))
 
 (defun nik/ensure-heading-exists (file headline)
   "Ensure that a heading exists in the specified file. If the heading does not exist, it is created."
@@ -119,11 +118,10 @@
        (save-buffer)))))
 
 
-(use-package org
-  :ensure t
-  :bind ("C-c c" . org-capture)
-  :hook (org-mode . nik/org-mode-setup)
-  :config
+(map! "C-c c" #'org-capture)
+(add-hook 'org-mode-hook #'nik/org-mode-setup)
+
+(after! org
   (setq org-ellipsis " ▾")
 
   (setq org-agenda-start-with-log-mode t)
@@ -232,19 +230,16 @@
 
 
 
-  (nik/org-font-setup))
+  (nik/org-font-setup)
 
-(use-package org-bullets
-  :ensure t
-  :after org)
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python")))
 
-(require 'org-tempo)
-
-
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
-(add-to-list 'org-structure-template-alist '("py" . "src python"))
+(use-package! org-bullets
+  :hook (org-mode . org-bullets-mode))
 
 ;; Set tab width to 2 for all buffers
 (setq-default tab-width 2)
